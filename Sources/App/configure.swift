@@ -24,9 +24,12 @@ public func configure(_ config: inout Config, _ env: inout Environment, _ servic
     var databases = DatabasesConfig()
     databases.add(database: sqlite, as: .sqlite)
     services.register(databases)
+    
+    try services.register(AuthenticationProvider())
 
     // Configure migrations
     var migrations = MigrationConfig()
+    migrations.add(model: Snapshot.self, database: .sqlite)
     migrations.add(model: User.self, database: .sqlite)
     migrations.add(model: Token.self, database: .sqlite)
     services.register(migrations)
